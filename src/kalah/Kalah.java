@@ -9,7 +9,9 @@ import com.qualitascorpus.testsupport.MockIO;
  */
 public class Kalah {
 
-	int numOfHouses = 5;
+	int NUMBER_OF_HOUSES = 6;
+	int INITIAL_SEEDS = 4;
+	boolean isPlayerOne = true;
 
 	public static void main(String[] args) {
 		new Kalah().play(new MockIO());
@@ -18,7 +20,7 @@ public class Kalah {
 		// Replace what's below with your implementation
 		displayBoard(io);
 
-		int houseNum = io.readInteger("Player P1's turn - Specify house number or 'q' to quit: ", 0, numOfHouses,-1, "q" );
+		int houseNum = io.readInteger("Player P1's turn - Specify house number or 'q' to quit: ", 0, NUMBER_OF_HOUSES,-1, "q" );
 
 		if (houseNum == -1){
 			io.println("Game over");

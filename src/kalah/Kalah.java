@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class Kalah {
 
 	int NUMBER_OF_HOUSES = 6;
-	int INITIAL_SEEDS = 4;
+	int INITIAL_SEEDS = 5;
 	boolean isPlayerOne = true;
 	ArrayList<House> p1Houses = new ArrayList<>();
 	ArrayList<House> p2Houses = new ArrayList<>();
@@ -28,10 +28,11 @@ public class Kalah {
 		// Replace what's below with your implementation
 		Board board = new Board();
 		board.setIO(io);
-		board.setupBoard(NUMBER_OF_HOUSES, INITIAL_SEEDS);
-		//displayBoard(io);
-
 		setUp();
+		//board.setupBoard(NUMBER_OF_HOUSES, INITIAL_SEEDS);
+		board.displayBoard(p1Houses,p2Houses,p1Store,p2Store);
+
+
 
 		int houseNum = io.readInteger("Player P1's turn - Specify house number or 'q' to quit: ", 0, NUMBER_OF_HOUSES,-1, "q" );
 

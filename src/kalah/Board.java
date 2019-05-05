@@ -26,17 +26,25 @@ public class Board {
         _io.println("+----+-------+-------+-------+-------+-------+-------+----+");
     }
 
-    void displayBoard(ArrayList p1Houses, ArrayList p2Houses,  Store p1Store, Store p2Store){
+    void displayBoard(ArrayList<House> p1Houses, ArrayList<House> p2Houses,  Store p1Store, Store p2Store){
         _io.println("+----+-------+-------+-------+-------+-------+-------+----+");
         _io.print("| P2 | ");
         for (int i = p2Houses.size(); i > 0; i-- ){
-            _io.print(i + "[ " + p2Houses.size() + "] | ");
+            if (p2Houses.get(i-1).getSeeds() > 9) {
+                _io.print(i + "[" + p2Houses.get(i - 1).getSeeds() + "] | ");
+            } else {
+                _io.print(i + "[ " + p2Houses.get(i - 1).getSeeds() + "] | ");
+            }
         }
         _io.println(" " + p2Store.getSeeds() + " |");
         _io.println("|    |-------+-------+-------+-------+-------+-------|    |");
         _io.print("|  " + p1Store.getSeeds() + " | ");
         for (int i = 0; i < p1Houses.size(); i++){
-            _io.print((i + 1) + "[ " + p1Houses.size() + "] | ");
+            if (p1Houses.get(i).getSeeds() > 9) {
+                _io.print(i + "[" + p1Houses.get(i).getSeeds() + "] | ");
+            } else {
+                _io.print(i + "[ " + p1Houses.get(i).getSeeds() + "] | ");
+            }
         }
         _io.println("P1 |");
         _io.println("+----+-------+-------+-------+-------+-------+-------+----+");

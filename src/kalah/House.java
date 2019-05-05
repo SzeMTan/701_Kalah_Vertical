@@ -8,4 +8,8 @@ public class House extends Pit {
     void updateHouse(){
         _seeds += 1;
     }
+
+    int getSeeds() {
+        return _seeds;
+    }
 }

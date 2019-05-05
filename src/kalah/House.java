@@ -1,10 +1,11 @@
 package kalah;
 
-public class House {
-    int _numOfSeeds = 0;
+public class House extends Pit {
 
-    public void House(int initNumSeeds) {
-        Player _player = new Player();
-        initNumSeeds = 0;
+    public void setupHouse (int seeds){
+        _seeds = seeds;
+    }
+    void updateHouse(){
+        _seeds += 1;
     }
 }

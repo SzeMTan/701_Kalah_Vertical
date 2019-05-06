@@ -36,7 +36,6 @@ public class Board {
                 _io.print(i + "[ " + p2Houses.get(i - 1).getSeeds() + "] | ");
             }
         }
-//        _io.println(" " + p1Store.getSeeds() + " |");
         if (p1Store.getSeeds() > 9){
             _io.println("" + p1Store.getSeeds() + " |");
         } else {
@@ -44,7 +43,6 @@ public class Board {
         }
 
         _io.println("|    |-------+-------+-------+-------+-------+-------|    |");
-//        _io.print("|  " + p2Store.getSeeds() + " | ");
         if (p2Store.getSeeds() > 9){
             _io.print("| " + p2Store.getSeeds() + " | ");
         } else {

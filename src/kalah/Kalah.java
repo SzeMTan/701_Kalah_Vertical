@@ -126,16 +126,19 @@ public class Kalah {
 				if((lastPit._seeds != 1)) { // house contains other seeds
 					setNewPlayer(getOppositePlayer());
 				} else { // house was empty
-					// add own seed to store
-					currentPlayer._store.addSeeds(1);
-					((House) lastPit).emptyHouse();
-
-					// add opponents seed to store
+					// check if opponents house has seeds
 					int oppHouseIndex = ((NUMBER_OF_HOUSES - 1) - currentPlayer._houses.indexOf(lastPit));
 					Player oppositePlayer = getOppositePlayer();
 					int oppositeHouseSeeds = oppositePlayer._houses.get(oppHouseIndex)._seeds;
-					currentPlayer._store.addSeeds(oppositeHouseSeeds);
-					oppositePlayer._houses.get(oppHouseIndex).emptyHouse();
+
+					if (oppositeHouseSeeds > 0){
+						// add own seed to store
+						currentPlayer._store.addSeeds(1);
+						((House) lastPit).emptyHouse();
+
+						currentPlayer._store.addSeeds(oppositeHouseSeeds);
+						oppositePlayer._houses.get(oppHouseIndex).emptyHouse();
+					}
 
 					//swap player
 					setNewPlayer(getOppositePlayer());

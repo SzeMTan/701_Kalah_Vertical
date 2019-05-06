@@ -30,7 +30,6 @@ public class Kalah {
 		Board board = new Board();
 		board.setIO(io);
 		setUp();
-		//board.setupBoard(NUMBER_OF_HOUSES, INITIAL_SEEDS);
 		board.displayBoard(player1._houses,player2._houses, player1._store,player2._store);
 
 		while (true) {
@@ -52,27 +51,10 @@ public class Kalah {
 			else{
 				playGame(board, io);
 			}
-//			} else {
-//				if (currentPlayer._houses.get(houseNum-1)._seeds == 0){
-//					io.println("House is empty. Move again.");
-//					board.displayBoard(player1._houses,player2._houses, player1._store,player2._store);
-//				}
-//				else{
-//					playGame(board, io);
-//				}
 		}
 		io.println("Game over");
 		board.displayBoard(player1._houses,player2._houses, player1._store,player2._store);
 	}
-
-
-
-//		numHouseSeeds = p1Houses.get(houseNum-1).getSeeds();
-//		p1Houses.get(houseNum-1).emptyHouse();
-//		numStoreSeeds = p1Store.getSeeds();
-//		while (numHouseSeeds > 0){
-//
-//		}
 
 	void setUp() {
 		ArrayList<House> p1Houses = new ArrayList<>();
@@ -139,21 +121,20 @@ public class Kalah {
 			// lands in the opposite players house
 			if (!currentPlayer._houses.contains(lastPit)){
 				// set opposite player
-				if (currentPlayer == player1){
-					setNewPlayer(player2);
-				} else {
-					setNewPlayer(player1);
-				}
+				setNewPlayer(getOppositePlayer());
 			} else { //lands in own house
 				if((lastPit._seeds != 1)) { // house contains other seeds
-					if (currentPlayer == player1){
-						setNewPlayer(player2);
-					} else {
-						setNewPlayer(player1);
-					}
+					setNewPlayer(getOppositePlayer());
 				} else { // house was empty
+					io.print("capture");
 					currentPlayer._store.addSeeds(1);
 					((House) lastPit).emptyHouse();
+					int oppHouseIndex = (NUMBER_OF_HOUSES - houseNum);
+					Player oppositePlayer = getOppositePlayer();
+					int oppositeHouseSeeds = oppositePlayer._houses.get(oppHouseIndex)._seeds;
+					currentPlayer._store.addSeeds(oppositeHouseSeeds);
+					oppositePlayer._houses.get(oppHouseIndex).emptyHouse();
+
 				}
 			}
 		}
@@ -161,5 +142,13 @@ public class Kalah {
 
 	void setNewPlayer(Player player){
 		currentPlayer = player;
+	}
+
+	Player getOppositePlayer(){
+		if (currentPlayer == player1){
+			return player2;
+		} else {
+			return player1;
+		}
 	}
 }

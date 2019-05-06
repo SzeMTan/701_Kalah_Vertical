@@ -105,6 +105,7 @@ public class Kalah {
 			}
 			else {
 				houseNum = 0;
+				allPits.get(houseNum).addSeeds(1);
 			}
 			houseNum++;
 			houseSeeds--;

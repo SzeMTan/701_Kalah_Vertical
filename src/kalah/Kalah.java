@@ -30,9 +30,9 @@ public class Kalah {
 		Board board = new Board();
 		board.setIO(io);
 		setUp();
-		board.displayBoard(player1._houses,player2._houses, player1._store,player2._store);
 
 		while (true) {
+			board.displayBoard(player1._houses,player2._houses, player1._store,player2._store);
 
 			if (currentPlayer == player1){
 				houseNum = io.readInteger("Player P1's turn - Specify house number or 'q' to quit: ", 1, NUMBER_OF_HOUSES, -1, "q");
@@ -46,7 +46,7 @@ public class Kalah {
 //			if (currentPlayer == player1){
 			if (currentPlayer._houses.get(houseNum-1)._seeds == 0){
 				io.println("House is empty. Move again.");
-				board.displayBoard(player1._houses,player2._houses, player1._store,player2._store);
+//				board.displayBoard(player1._houses,player2._houses, player1._store,player2._store);
 			}
 			else{
 				playGame(board, io);
@@ -115,7 +115,7 @@ public class Kalah {
 
 	void playGame(Board board, IO io){
 		sowSeeds(currentPlayer, houseNum,io);
-		board.displayBoard(player1._houses,player2._houses, player1._store,player2._store);
+//		board.displayBoard(player1._houses,player2._houses, player1._store,player2._store);
 
 		if (!(lastPit instanceof Store)) {
 			// lands in the opposite players house
@@ -126,14 +126,20 @@ public class Kalah {
 				if((lastPit._seeds != 1)) { // house contains other seeds
 					setNewPlayer(getOppositePlayer());
 				} else { // house was empty
-					io.print("capture");
+					// add own seed to store
 					currentPlayer._store.addSeeds(1);
 					((House) lastPit).emptyHouse();
-					int oppHouseIndex = (NUMBER_OF_HOUSES - houseNum);
+
+					// add opponents seed to store
+					int oppHouseIndex = ((NUMBER_OF_HOUSES - 1) - currentPlayer._houses.indexOf(lastPit));
 					Player oppositePlayer = getOppositePlayer();
 					int oppositeHouseSeeds = oppositePlayer._houses.get(oppHouseIndex)._seeds;
 					currentPlayer._store.addSeeds(oppositeHouseSeeds);
 					oppositePlayer._houses.get(oppHouseIndex).emptyHouse();
+
+					//swap player
+					setNewPlayer(getOppositePlayer());
+
 
 				}
 			}

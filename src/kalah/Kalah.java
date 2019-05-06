@@ -18,8 +18,6 @@ public class Kalah {
 	int numStoreSeeds;
 	ArrayList<House> p1Houses = new ArrayList<>();
 	ArrayList<House> p2Houses = new ArrayList<>();
-	ArrayList<Pit> p1Pits = new ArrayList<>();
-	ArrayList<Pit> p2Pits = new ArrayList<>();
 	Store p1Store;
 	Store p2Store;
 
@@ -43,21 +41,24 @@ public class Kalah {
 			board.displayBoard(p1Houses,p2Houses,p1Store,p2Store);
 		}
 
-		numHouseSeeds = p1Houses.get(houseNum-1).getSeeds();
-		p1Houses.get(houseNum-1).emptyHouse();
-		numStoreSeeds = p1Store.getSeeds();
-		makePlayerPits();
-		while (numHouseSeeds > 0){
-
-		}
+//		numHouseSeeds = p1Houses.get(houseNum-1).getSeeds();
+//		p1Houses.get(houseNum-1).emptyHouse();
+//		numStoreSeeds = p1Store.getSeeds();
+//		while (numHouseSeeds > 0){
+//
+//		}
+		sowSeeds(isPlayerOne, houseNum);
+		board.displayBoard(p1Houses,p2Houses,p1Store,p2Store);
 	}
 
 	void setUp() {
 		for (int i = 0; i < NUMBER_OF_HOUSES; i++){
-			House house = new House();
-			house.setupHouse(INITIAL_SEEDS);
-			p1Houses.add(house);
-			p2Houses.add(house);
+			House house1 = new House();
+			House house2 = new House();
+			house1.setupHouse(INITIAL_SEEDS);
+			house2.setupHouse(INITIAL_SEEDS);
+			p1Houses.add(house1);
+			p2Houses.add(house2);
 		}
 		p1Store = new Store();
 		p1Store.setupStore(0);
@@ -65,19 +66,31 @@ public class Kalah {
 		p2Store.setupStore(0);
 	}
 
-	int getSeedsFromHouse(int selectedHouse){
-		if(isPlayerOne){
-			return p1Houses.get(selectedHouse).getSeeds();
-		}
-		else {
-			return p2Houses.get(selectedHouse).getSeeds();
-		}
-	}
+	void sowSeeds(boolean isPlayerOne, int houseNum) {
+		int houseSelected = houseNum - 1; // 0 indexed
+		int houseSeeds = p1Houses.get(houseSelected).getSeeds(); // pickup seeds
+		ArrayList<Pit> allPits = new ArrayList<>();
+		p1Houses.get(houseSelected).emptyHouse(); // pickup seeds part 2
 
-	void makePlayerPits(){
-		p1Pits.addAll(p1Houses);
-		p1Pits.add(p1Store);
-		p2Pits.addAll(p2Houses);
-		p2Pits.add(p2Store);
+		// add everything
+		allPits.addAll(p1Houses);
+		allPits.add(p1Store);
+		allPits.addAll(p2Houses);
+		allPits.add(p2Store);
+
+		// keep going until no more seeds
+		while (houseSeeds > 0){
+			if (houseNum < allPits.size()){ // still in list?
+				allPits.get(houseNum).addSeeds(1);
+			}
+			else {
+				houseNum = 0;
+			}
+			houseNum++;
+			houseSeeds--;
+		}
+		if (allPits.get(houseNum) instanceof Store){
+
+		}
 	}
 }

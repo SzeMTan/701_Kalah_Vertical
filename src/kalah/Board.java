@@ -36,9 +36,9 @@ public class Board {
                 _io.print(i + "[ " + p2Houses.get(i - 1).getSeeds() + "] | ");
             }
         }
-        _io.println(" " + p2Store.getSeeds() + " |");
+        _io.println(" " + p1Store.getSeeds() + " |");
         _io.println("|    |-------+-------+-------+-------+-------+-------|    |");
-        _io.print("|  " + p1Store.getSeeds() + " | ");
+        _io.print("|  " + p2Store.getSeeds() + " | ");
         for (int i = 0; i < p1Houses.size(); i++){
             if (p1Houses.get(i).getSeeds() > 9) {
                 _io.print(i+1 + "[" + p1Houses.get(i).getSeeds() + "] | ");

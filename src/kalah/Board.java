@@ -41,9 +41,9 @@ public class Board {
         _io.print("|  " + p1Store.getSeeds() + " | ");
         for (int i = 0; i < p1Houses.size(); i++){
             if (p1Houses.get(i).getSeeds() > 9) {
-                _io.print(i + "[" + p1Houses.get(i).getSeeds() + "] | ");
+                _io.print(i+1 + "[" + p1Houses.get(i).getSeeds() + "] | ");
             } else {
-                _io.print(i + "[ " + p1Houses.get(i).getSeeds() + "] | ");
+                _io.print(i+1 + "[ " + p1Houses.get(i).getSeeds() + "] | ");
             }
         }
         _io.println("P1 |");

@@ -5,11 +5,10 @@ public class House extends Pit {
     public void setupHouse (int seeds){
         _seeds = seeds;
     }
-    void updateHouse(){
-        _seeds += 1;
+
+    public void emptyHouse() {
+        _seeds = 0;
     }
 
-    int getSeeds() {
-        return _seeds;
-    }
+
 }

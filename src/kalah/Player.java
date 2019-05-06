@@ -3,13 +3,14 @@ package kalah;
 import java.util.ArrayList;
 
 public class Player {
-    ArrayList<Pit> houses = new ArrayList<>();
-    Store store = new Store();
+    ArrayList<House> _houses;
+    Store _store;
 
-    House house = new House();
+    public void setHouses(ArrayList houses) {
+        _houses = houses;
+    }
 
-//    public void setHouse(House house) {
-//        this.house = house;
-//        house.setupHouse();
-//    }
+    public void setStore(Store store) {
+        _store = store;
+    }
 }

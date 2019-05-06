@@ -12,14 +12,15 @@ import java.util.ArrayList;
 public class Kalah {
 
 	int NUMBER_OF_HOUSES = 6;
-	int INITIAL_SEEDS = 5;
+	int INITIAL_SEEDS = 4;
 	boolean isPlayerOne = true;
+	int houseNum = 0;
 	int numHouseSeeds;
 	int numStoreSeeds;
-	ArrayList<House> p1Houses = new ArrayList<>();
-	ArrayList<House> p2Houses = new ArrayList<>();
-	Store p1Store;
-	Store p2Store;
+	Pit lastPit;
+	Player player1 = new Player();
+	Player player2 = new Player();
+	Player currentPlayer = player1;
 
 	public static void main(String[] args) {
 		new Kalah().play(new MockIO());
@@ -30,16 +31,41 @@ public class Kalah {
 		board.setIO(io);
 		setUp();
 		//board.setupBoard(NUMBER_OF_HOUSES, INITIAL_SEEDS);
-		board.displayBoard(p1Houses,p2Houses,p1Store,p2Store);
+		board.displayBoard(player1._houses,player2._houses, player1._store,player2._store);
 
+		while (true) {
 
+			if (currentPlayer == player1){
+				houseNum = io.readInteger("Player P1's turn - Specify house number or 'q' to quit: ", 1, NUMBER_OF_HOUSES, -1, "q");
+			} else {
+				houseNum = io.readInteger("Player P2's turn - Specify house number or 'q' to quit: ", 1, NUMBER_OF_HOUSES, -1, "q");
 
-		int houseNum = io.readInteger("Player P1's turn - Specify house number or 'q' to quit: ", 1, NUMBER_OF_HOUSES,-1, "q" );
-
-		if (houseNum == -1){
-			io.println("Game over");
-			board.displayBoard(p1Houses,p2Houses,p1Store,p2Store);
+			}
+			if (houseNum == -1){
+				break;
+			}
+//			if (currentPlayer == player1){
+			if (currentPlayer._houses.get(houseNum-1)._seeds == 0){
+				io.println("House is empty. Move again.");
+				board.displayBoard(player1._houses,player2._houses, player1._store,player2._store);
+			}
+			else{
+				playGame(board, io);
+			}
+//			} else {
+//				if (currentPlayer._houses.get(houseNum-1)._seeds == 0){
+//					io.println("House is empty. Move again.");
+//					board.displayBoard(player1._houses,player2._houses, player1._store,player2._store);
+//				}
+//				else{
+//					playGame(board, io);
+//				}
 		}
+		io.println("Game over");
+		board.displayBoard(player1._houses,player2._houses, player1._store,player2._store);
+	}
+
+
 
 //		numHouseSeeds = p1Houses.get(houseNum-1).getSeeds();
 //		p1Houses.get(houseNum-1).emptyHouse();
@@ -47,11 +73,10 @@ public class Kalah {
 //		while (numHouseSeeds > 0){
 //
 //		}
-		sowSeeds(isPlayerOne, houseNum);
-		board.displayBoard(p1Houses,p2Houses,p1Store,p2Store);
-	}
 
 	void setUp() {
+		ArrayList<House> p1Houses = new ArrayList<>();
+		ArrayList<House> p2Houses = new ArrayList<>();
 		for (int i = 0; i < NUMBER_OF_HOUSES; i++){
 			House house1 = new House();
 			House house2 = new House();
@@ -60,24 +85,37 @@ public class Kalah {
 			p1Houses.add(house1);
 			p2Houses.add(house2);
 		}
-		p1Store = new Store();
+		Store p1Store = new Store();
 		p1Store.setupStore(0);
-		p2Store = new Store();
+		player1.setStore(p1Store);
+		player1.setHouses(p1Houses);
+		Store p2Store = new Store();
 		p2Store.setupStore(0);
+		player2.setStore(p2Store);
+		player2.setHouses(p2Houses);
+
+
 	}
 
-	void sowSeeds(boolean isPlayerOne, int houseNum) {
+	void sowSeeds(Player currentPlayer, int houseNum,IO io) {
 		int houseSelected = houseNum - 1; // 0 indexed
-		int houseSeeds = p1Houses.get(houseSelected).getSeeds(); // pickup seeds
+		int houseSeeds;
 		ArrayList<Pit> allPits = new ArrayList<>();
-		p1Houses.get(houseSelected).emptyHouse(); // pickup seeds part 2
 
 		// add everything
-		allPits.addAll(p1Houses);
-		allPits.add(p1Store);
-		allPits.addAll(p2Houses);
-		allPits.add(p2Store);
-
+		if (currentPlayer == player1) {
+			houseSeeds = player1._houses.get(houseSelected).getSeeds(); // pickup seeds
+			player1._houses.get(houseSelected).emptyHouse(); // pickup seeds part 2
+			allPits.addAll(player1._houses);
+			allPits.add(player1._store);
+			allPits.addAll(player2._houses);
+		} else {
+			houseSeeds = player2._houses.get(houseSelected).getSeeds(); // pickup seeds
+			player2._houses.get(houseSelected).emptyHouse(); // pickup seeds part 2
+			allPits.addAll(player2._houses);
+			allPits.add(player2._store);
+			allPits.addAll(player1._houses);
+		}
 		// keep going until no more seeds
 		while (houseSeeds > 0){
 			if (houseNum < allPits.size()){ // still in list?
@@ -89,8 +127,39 @@ public class Kalah {
 			houseNum++;
 			houseSeeds--;
 		}
-		if (allPits.get(houseNum) instanceof Store){
+		lastPit = allPits.get(houseNum-1);
 
+	}
+
+	void playGame(Board board, IO io){
+		sowSeeds(currentPlayer, houseNum,io);
+		board.displayBoard(player1._houses,player2._houses, player1._store,player2._store);
+
+		if (!(lastPit instanceof Store)) {
+			// lands in the opposite players house
+			if (!currentPlayer._houses.contains(lastPit)){
+				// set opposite player
+				if (currentPlayer == player1){
+					setNewPlayer(player2);
+				} else {
+					setNewPlayer(player1);
+				}
+			} else { //lands in own house
+				if((lastPit._seeds != 1)) { // house contains other seeds
+					if (currentPlayer == player1){
+						setNewPlayer(player2);
+					} else {
+						setNewPlayer(player1);
+					}
+				} else { // house was empty
+					currentPlayer._store.addSeeds(1);
+					((House) lastPit).emptyHouse();
+				}
+			}
 		}
+	}
+
+	void setNewPlayer(Player player){
+		currentPlayer = player;
 	}
 }

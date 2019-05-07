@@ -10,6 +10,17 @@ public class Board {
    public void setIO(IO io){
        this._io = io;
    }
+
+   ArrayList<Player> _playersList;
+
+    public ArrayList<Player> getPlayersList() {
+        return _playersList;
+    }
+
+    public void setPlayersList(ArrayList<Player> players){
+        _playersList = players;
+    }
+
     void setupBoard(int numOfHouses, int numOfSeeds){
         _io.println("+----+-------+-------+-------+-------+-------+-------+----+");
         _io.print("| P2 | ");
@@ -65,15 +76,13 @@ public class Board {
         return houseSelected;
     }
 
-    void displayFinalState(GameState gameState, Player player1, Player player2){
+    void displayFromState(GameState gameState, Player player1, Player player2){
         switch (gameState){
             case GAME_OVER:
-                _io.println("Game over");
-                displayBoard(player1.getHouses(),player2.getHouses(), player1.getStore(),player2.getStore());
+                printGameOverBoard();
                 break;
             case END_GAME:
-                _io.println("Game over");
-                displayBoard(player1.getHouses(),player2.getHouses(), player1.getStore(),player2.getStore());
+                printGameOverBoard();
                 int player1Score = player1.getFinalScore();
                 int player2Score = player2.getFinalScore();
                 _io.println("	player 1:" + player1Score);
@@ -86,6 +95,14 @@ public class Board {
                     _io.println("A tie!");
                 }
                 break;
+            case EMPTY_HOUSE:
+                _io.println("House is empty. Move again.");
+                break;
         }
+    }
+
+    void printGameOverBoard(){
+        _io.println("Game over");
+        displayBoard(_playersList.get(0).getHouses(),_playersList.get(1).getHouses(), _playersList.get(0).getStore(),_playersList.get(1).getStore());
     }
 }

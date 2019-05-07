@@ -12,7 +12,9 @@ import java.util.ArrayList;
 
 enum GameState{
 	GAME_OVER,
-	END_GAME
+	END_GAME,
+	EMPTY_HOUSE,
+	PLAY_GAME
 }
 public class Kalah {
 
@@ -24,7 +26,8 @@ public class Kalah {
 	Player player2 = new Player();
 	Player currentPlayer = player1;
 	Player otherPlayer = player2;
-	GameState gameState;
+	GameState gameState = GameState.PLAY_GAME;
+	ArrayList<Player> playerList;
 
 	public static void main(String[] args) {
 		new Kalah().play(new MockIO());
@@ -34,6 +37,7 @@ public class Kalah {
 		Board board = new Board();
 		board.setIO(io);
 		setUp();
+		board.setPlayersList(playerList);
 
 		while (true) {
 			board.displayBoard(player1.getHouses(),player2.getHouses(), player1.getStore(),player2.getStore());
@@ -49,19 +53,22 @@ public class Kalah {
 				gameState = GameState.GAME_OVER;
 				break;
 			}
-			if (currentPlayer.getHouses().get(houseNum-1).getSeeds() == 0){
-				io.println("House is empty. Move again.");
+			if (isHouseEmpty()){
+				gameState = GameState.EMPTY_HOUSE;
+				board.displayFromState(gameState,player1,player2);
+				gameState = GameState.PLAY_GAME;
+
 			}
 			else{
 				playGame();
 			}
 		}
-		board.displayFinalState(gameState, player1, player2);
+		board.displayFromState(gameState, player1, player2);
 	}
 
 	void setUp() {
 
-		ArrayList<Player> playerList = new ArrayList<>();
+		playerList = new ArrayList<>();
 		player1.setId(1);
 		player2.setId(2);
 		playerList.add(player1);
@@ -159,15 +166,10 @@ public class Kalah {
 		}
 	}
 
-//	boolean checkifHousesAreEmpty(){
-//		boolean isEmpty = false;
-//		int allSeeds = 0;
-//		for (House h: currentPlayer.getHouses()){
-//			allSeeds += h.getSeeds();
-//		}
-//		if (allSeeds == 0){
-//			isEmpty = true;
-//		}
-//		return isEmpty;
-//	}
+	boolean isHouseEmpty(){
+		if (currentPlayer.getHouses().get(houseNum-1).getSeeds() == 0){
+			return true;
+		}
+		return false;
+	}
 }

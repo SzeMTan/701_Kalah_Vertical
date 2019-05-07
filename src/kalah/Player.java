@@ -3,9 +3,10 @@ package kalah;
 import java.util.ArrayList;
 
 public class Player {
-    ArrayList<House> _houses;
-    Store _store;
-    int _score;
+    private ArrayList<House> _houses;
+    private Store _store;
+    private int _score;
+    private int _id;
 
     public void setHouses(ArrayList houses) {
         _houses = houses;
@@ -26,5 +27,33 @@ public class Player {
         _score = 0;
         calculateFinalScore();
         return _score;
+    }
+
+    public ArrayList<House> getHouses(){
+        return _houses;
+    }
+
+    public Store getStore() {
+        return _store;
+    }
+
+    public int getId() {
+        return _id;
+    }
+
+    void setId(int id){
+        _id = id;
+    }
+
+    boolean checkifHousesAreEmpty(){
+        boolean isEmpty = false;
+        int allSeeds = 0;
+        for (House h: this.getHouses()){
+            allSeeds += h.getSeeds();
+        }
+        if (allSeeds == 0){
+            isEmpty = true;
+        }
+        return isEmpty;
     }
 }

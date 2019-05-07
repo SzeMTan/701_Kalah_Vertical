@@ -21,23 +21,7 @@ public class Board {
         _playersList = players;
     }
 
-    void setupBoard(int numOfHouses, int numOfSeeds){
-        _io.println("+----+-------+-------+-------+-------+-------+-------+----+");
-        _io.print("| P2 | ");
-        for (int i = numOfHouses; i > 0; i-- ){
-            _io.print(i + "[ " + numOfSeeds + "] | ");
-        }
-        _io.println(" 0 |");
-        _io.println("|    |-------+-------+-------+-------+-------+-------|    |");
-        _io.print("|  0 | ");
-        for (int i = 0; i < numOfHouses; i++){
-            _io.print((i + 1) + "[ " + numOfSeeds + "] | ");
-        }
-        _io.println("P1 |");
-        _io.println("+----+-------+-------+-------+-------+-------+-------+----+");
-    }
-
-    void displayBoard(ArrayList<House> p1Houses, ArrayList<House> p2Houses,  Store p1Store, Store p2Store){
+    public void displayBoard(ArrayList<House> p1Houses, ArrayList<House> p2Houses,  Store p1Store, Store p2Store){
         _io.println("+----+-------+-------+-------+-------+-------+-------+----+");
         _io.print("| P2 | ");
         for (int i = p2Houses.size(); i > 0; i-- ){
@@ -70,23 +54,26 @@ public class Board {
         _io.println("+----+-------+-------+-------+-------+-------+-------+----+");
     }
 
-    int askPlayerInput (Player player, int numberOfHouses){
+    public int askPlayerInput (Player player, int numberOfHouses){
         int houseSelected;
         houseSelected = _io.readInteger("Player P" + player.getId() + "'s turn - Specify house number or 'q' to quit: ", 1, numberOfHouses, -1, "q");
         return houseSelected;
     }
 
-    void displayFromState(GameState gameState, Player player1, Player player2){
+    public void handleGameOver(GameState gameState, Player player1, Player player2){
         switch (gameState){
-            case GAME_OVER:
+            case QUIT:
                 printGameOverBoard();
                 break;
-            case END_GAME:
+            case GAME_OVER:
                 printGameOverBoard();
+
                 int player1Score = player1.getFinalScore();
                 int player2Score = player2.getFinalScore();
+
                 _io.println("	player 1:" + player1Score);
                 _io.println("	player 2:" + player2Score);
+
                 if (player1Score > player2Score){
                     _io.println("Player 1 wins!");
                 } else if (player1Score < player2Score){
@@ -94,14 +81,16 @@ public class Board {
                 } else {
                     _io.println("A tie!");
                 }
-                break;
-            case EMPTY_HOUSE:
-                _io.println("House is empty. Move again.");
+
                 break;
         }
     }
 
-    void printGameOverBoard(){
+    public void houseEmptyMessage() {
+        _io.println("House is empty. Move again.");
+    }
+
+    public void printGameOverBoard(){
         _io.println("Game over");
         displayBoard(_playersList.get(0).getHouses(),_playersList.get(1).getHouses(), _playersList.get(0).getStore(),_playersList.get(1).getStore());
     }

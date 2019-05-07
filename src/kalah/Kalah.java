@@ -11,9 +11,8 @@ import java.util.ArrayList;
  */
 
 enum GameState{
+	QUIT,
 	GAME_OVER,
-	END_GAME,
-	EMPTY_HOUSE,
 	PLAY_GAME
 }
 public class Kalah {
@@ -43,27 +42,25 @@ public class Kalah {
 
 			// check if houses of the current player is empty
 			if (currentPlayer.checkIfHousesAreEmpty()){
-				gameState = GameState.END_GAME;
+				gameState = GameState.GAME_OVER;
 				break;
 			}
 			houseNum = board.askPlayerInput(currentPlayer, NUMBER_OF_HOUSES);
 
 			// Check for quit
 			if (houseNum == -1){
-				gameState = GameState.GAME_OVER;
+				gameState = GameState.QUIT;
 				break;
 			}
 
 			// Check for invalid selection (empty house)
 			if (isHouseEmpty()){
-				gameState = GameState.EMPTY_HOUSE;
-				board.displayFromState(gameState,player1,player2);
-				gameState = GameState.PLAY_GAME;
+				board.houseEmptyMessage();
 			} else{
 				playGame();
 			}
 		}
-		board.displayFromState(gameState, player1, player2);
+		board.handleGameOver(gameState, player1, player2);
 	}
 
 	private void setUp() {

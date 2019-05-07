@@ -9,18 +9,22 @@ import java.util.ArrayList;
  * This class is the starting point for a Kalah implementation using
  * the test infrastructure.
  */
+
+enum GameState{
+	GAME_OVER,
+	END_GAME
+}
 public class Kalah {
 
 	int NUMBER_OF_HOUSES = 6;
 	int INITIAL_SEEDS = 4;
-	boolean isPlayerOne = true;
 	int houseNum = 0;
-	int numHouseSeeds;
-	int numStoreSeeds;
 	Pit lastPit;
 	Player player1 = new Player();
 	Player player2 = new Player();
 	Player currentPlayer = player1;
+	Player otherPlayer = player2;
+	GameState gameState;
 
 	public static void main(String[] args) {
 		new Kalah().play(new MockIO());
@@ -34,47 +38,87 @@ public class Kalah {
 		while (true) {
 			board.displayBoard(player1._houses,player2._houses, player1._store,player2._store);
 
+			// check if houses of the current player is empty
+			if (checkifHousesAreEmpty()){
+				gameState = GameState.END_GAME;
+				break;
+			}
 			if (currentPlayer == player1){
 				houseNum = io.readInteger("Player P1's turn - Specify house number or 'q' to quit: ", 1, NUMBER_OF_HOUSES, -1, "q");
 			} else {
 				houseNum = io.readInteger("Player P2's turn - Specify house number or 'q' to quit: ", 1, NUMBER_OF_HOUSES, -1, "q");
-
 			}
+
 			if (houseNum == -1){
+				gameState = GameState.GAME_OVER;
 				break;
 			}
-//			if (currentPlayer == player1){
 			if (currentPlayer._houses.get(houseNum-1)._seeds == 0){
 				io.println("House is empty. Move again.");
-//				board.displayBoard(player1._houses,player2._houses, player1._store,player2._store);
 			}
 			else{
 				playGame(board, io);
 			}
 		}
-		io.println("Game over");
-		board.displayBoard(player1._houses,player2._houses, player1._store,player2._store);
+
+		switch (gameState){
+			case GAME_OVER:
+				io.println("Game over");
+				board.displayBoard(player1._houses,player2._houses, player1._store,player2._store);
+				break;
+			case END_GAME:
+				io.println("Game over");
+				board.displayBoard(player1._houses,player2._houses, player1._store,player2._store);
+				int player1Score = player1.getFinalScore();
+				int player2Score = player2.getFinalScore();
+				io.println("	player 1:" + player1Score);
+				io.println("	player 2:" + player2Score);
+				if (player1Score > player2Score){
+					io.println("Player 1 wins!");
+				} else if (player1Score < player2Score){
+					io.println("Player 2 wins!");
+				} else {
+					io.println("A tie!");
+				}
+				break;
+		}
+
 	}
 
 	void setUp() {
-		ArrayList<House> p1Houses = new ArrayList<>();
-		ArrayList<House> p2Houses = new ArrayList<>();
-		for (int i = 0; i < NUMBER_OF_HOUSES; i++){
-			House house1 = new House();
-			House house2 = new House();
-			house1.setupHouse(INITIAL_SEEDS);
-			house2.setupHouse(INITIAL_SEEDS);
-			p1Houses.add(house1);
-			p2Houses.add(house2);
+
+		ArrayList<Player> playerList = new ArrayList<>();
+		playerList.add(player1);
+		playerList.add(player2);
+
+//		ArrayList<House> p1Houses = new ArrayList<>();
+//		ArrayList<House> p2Houses = new ArrayList<>();
+//		for (int i = 0; i < NUMBER_OF_HOUSES; i++){
+//			House house1 = new House();
+//			House house2 = new House();
+//			house1.setupHouse(INITIAL_SEEDS);
+//			house2.setupHouse(INITIAL_SEEDS);
+//			p1Houses.add(house1);
+//			p2Houses.add(house2);
+//		}
+
+		for (Player player : playerList){
+			ArrayList<House> houses = new ArrayList<>();
+			for (int i = 0; i < NUMBER_OF_HOUSES; i++){
+			House house = new House();
+			house.setupHouse(INITIAL_SEEDS);
+			houses.add(house);
+			}
+			player.setHouses(houses);
 		}
 		Store p1Store = new Store();
 		p1Store.setupStore(0);
 		player1.setStore(p1Store);
-		player1.setHouses(p1Houses);
+		//player1.setHouses(p1Houses);
 		Store p2Store = new Store();
 		p2Store.setupStore(0);
 		player2.setStore(p2Store);
-		player2.setHouses(p2Houses);
+		//player2.setHouses(p2Houses);
 
 
 	}
@@ -143,8 +187,6 @@ public class Kalah {
 
 					//swap player
 					setNewPlayer(getOppositePlayer());
-
-
 				}
 			}
 		}
@@ -160,5 +202,17 @@ public class Kalah {
 		} else {
 			return player1;
 		}
+	}
+
+	boolean checkifHousesAreEmpty(){
+		boolean isEmpty = false;
+		int allSeeds = 0;
+		for (House h: currentPlayer._houses){
+			allSeeds += h.getSeeds();
+		}
+		if (allSeeds == 0){
+			isEmpty = true;
+		}
+		return isEmpty;
 	}
 }

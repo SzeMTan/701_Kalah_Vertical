@@ -45,7 +45,7 @@ public class Player {
         _id = id;
     }
 
-    boolean checkifHousesAreEmpty(){
+    boolean checkIfHousesAreEmpty(){
         boolean isEmpty = false;
         int allSeeds = 0;
         for (House h: this.getHouses()){

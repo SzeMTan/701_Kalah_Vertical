@@ -1,7 +1,0 @@
-package kalah;
-
-public class GameManager {
-    Board board;
-    Player currentPlayer;
-
-}

@@ -5,13 +5,13 @@ import com.qualitascorpus.testsupport.IO;
 import java.util.ArrayList;
 
 public class Board {
-    IO _io;
+    private IO _io;
+    private ArrayList<Player> _playersList;
+
 
    public void setIO(IO io){
        this._io = io;
    }
-
-   ArrayList<Player> _playersList;
 
     public ArrayList<Player> getPlayersList() {
         return _playersList;

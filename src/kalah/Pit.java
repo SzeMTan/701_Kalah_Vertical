@@ -2,16 +2,17 @@ package kalah;
 
 public class Pit {
 
-    int _seeds;
+    protected int _seeds;
 
-    void setUp(int seeds) {
+    public void setUp(int seeds) {
         _seeds = seeds;
     }
-    void addSeeds(int seeds){
+
+    public void addSeeds(int seeds){
         _seeds += seeds;
     }
 
-    int getSeeds(){
+    public int getSeeds(){
         return _seeds;
     }
 }

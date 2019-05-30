@@ -21,37 +21,78 @@ public class Board {
         _playersList = players;
     }
 
+//    public void displayBoard(ArrayList<House> p1Houses, ArrayList<House> p2Houses,  Store p1Store, Store p2Store){
+//        _io.println("+---------------+");
+//        _io.print("| P2 | ");
+//        for (int i = p2Houses.size(); i > 0; i-- ){
+//            if (p2Houses.get(i-1).getSeeds() > 9) {
+//                _io.print(i + "[" + p2Houses.get(i - 1).getSeeds() + "] | ");
+//            } else {
+//                _io.print(i + "[ " + p2Houses.get(i - 1).getSeeds() + "] | ");
+//            }
+//        }
+//        if (p1Store.getSeeds() > 9){
+//            _io.println("" + p1Store.getSeeds() + " |");
+//        } else {
+//            _io.println(" " + p1Store.getSeeds() + " |");
+//        }
+//
+//        _io.println("|    |-------+-------+-------+-------+-------+-------|    |");
+//        if (p2Store.getSeeds() > 9){
+//            _io.print("| " + p2Store.getSeeds() + " | ");
+//        } else {
+//            _io.print("|  " + p2Store.getSeeds() + " | ");
+//        }
+//        for (int i = 0; i < p1Houses.size(); i++){
+//            if (p1Houses.get(i).getSeeds() > 9) {
+//                _io.print(i+1 + "[" + p1Houses.get(i).getSeeds() + "] | ");
+//            } else {
+//                _io.print(i+1 + "[ " + p1Houses.get(i).getSeeds() + "] | ");
+//            }
+//        }
+//        _io.println("P1 |");
+//        _io.println("+---------------+");
+//    }
+
     public void displayBoard(ArrayList<House> p1Houses, ArrayList<House> p2Houses,  Store p1Store, Store p2Store){
-        _io.println("+----+-------+-------+-------+-------+-------+-------+----+");
-        _io.print("| P2 | ");
-        for (int i = p2Houses.size(); i > 0; i-- ){
-            if (p2Houses.get(i-1).getSeeds() > 9) {
-                _io.print(i + "[" + p2Houses.get(i - 1).getSeeds() + "] | ");
-            } else {
-                _io.print(i + "[ " + p2Houses.get(i - 1).getSeeds() + "] | ");
-            }
+        _io.println("+---------------+");
+        if (p2Store.getSeeds() < 10) {
+            _io.println("|       | P2  " + p2Store.getSeeds() + " |");
         }
-        if (p1Store.getSeeds() > 9){
-            _io.println("" + p1Store.getSeeds() + " |");
-        } else {
-            _io.println(" " + p1Store.getSeeds() + " |");
+        else {
+            _io.println("|       | P2 " + p2Store.getSeeds() + " |");
+        }
+        _io.println("+-------+-------+");
+        int j = p2Houses.size();
+        for (int i = 0; i < p1Houses.size(); i++ ){
+            if (p1Houses.get(i).getSeeds() < 10) {
+                _io.print("| " + (i + 1) + "[ " + p1Houses.get(i).getSeeds() + "] ");
+                if (p2Houses.get(j - 1).getSeeds() < 10){
+                    _io.println("| " + j + "[ " + p2Houses.get(j - 1).getSeeds() + "] |");
+                }
+                else {
+                    _io.println("| " + j + "[" + p2Houses.get(j - 1).getSeeds() + "] |");
+                }
+            } else {
+                _io.print("| " + (i + 1) + "[" + p1Houses.get(i).getSeeds() + "] ");
+                if (p2Houses.get(j - 1).getSeeds() < 10){
+                    _io.println("| " + j + "[ " + p2Houses.get(j - 1).getSeeds() + "] |");
+                }
+                else {
+                    _io.println("| " + j + "[" + p2Houses.get(j - 1).getSeeds() + "] |");
+                }
+            }
+            j--;
+        }
+        _io.println("+-------+-------+");
+        if (p1Store.getSeeds() < 10) {
+            _io.println("| P1  " + p1Store.getSeeds() +" |       |");
+        }
+        else {
+            _io.println("| P1 " + p1Store.getSeeds() +" |       |");
         }
 
-        _io.println("|    |-------+-------+-------+-------+-------+-------|    |");
-        if (p2Store.getSeeds() > 9){
-            _io.print("| " + p2Store.getSeeds() + " | ");
-        } else {
-            _io.print("|  " + p2Store.getSeeds() + " | ");
-        }
-        for (int i = 0; i < p1Houses.size(); i++){
-            if (p1Houses.get(i).getSeeds() > 9) {
-                _io.print(i+1 + "[" + p1Houses.get(i).getSeeds() + "] | ");
-            } else {
-                _io.print(i+1 + "[ " + p1Houses.get(i).getSeeds() + "] | ");
-            }
-        }
-        _io.println("P1 |");
-        _io.println("+----+-------+-------+-------+-------+-------+-------+----+");
+        _io.println("+---------------+");
     }
 
     public int askPlayerInput (Player player, int numberOfHouses){

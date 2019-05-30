@@ -67,20 +67,10 @@ public class Board {
         for (int i = 0; i < p1Houses.size(); i++ ){
             if (p1Houses.get(i).getSeeds() < 10) {
                 _io.print("| " + (i + 1) + "[ " + p1Houses.get(i).getSeeds() + "] ");
-                if (p2Houses.get(j - 1).getSeeds() < 10){
-                    _io.println("| " + j + "[ " + p2Houses.get(j - 1).getSeeds() + "] |");
-                }
-                else {
-                    _io.println("| " + j + "[" + p2Houses.get(j - 1).getSeeds() + "] |");
-                }
+                printP2(p2Houses, j);
             } else {
                 _io.print("| " + (i + 1) + "[" + p1Houses.get(i).getSeeds() + "] ");
-                if (p2Houses.get(j - 1).getSeeds() < 10){
-                    _io.println("| " + j + "[ " + p2Houses.get(j - 1).getSeeds() + "] |");
-                }
-                else {
-                    _io.println("| " + j + "[" + p2Houses.get(j - 1).getSeeds() + "] |");
-                }
+                printP2(p2Houses, j);
             }
             j--;
         }
@@ -93,6 +83,15 @@ public class Board {
         }
 
         _io.println("+---------------+");
+    }
+
+    private void printP2(ArrayList<House> p2Houses, int j){
+        if (p2Houses.get(j - 1).getSeeds() < 10){
+            _io.println("| " + j + "[ " + p2Houses.get(j - 1).getSeeds() + "] |");
+        }
+        else {
+            _io.println("| " + j + "[" + p2Houses.get(j - 1).getSeeds() + "] |");
+        }
     }
 
     public int askPlayerInput (Player player, int numberOfHouses){
